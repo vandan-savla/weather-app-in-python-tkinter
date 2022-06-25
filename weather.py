@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
 from PIL import Image, ImageTk
-from matplotlib.pyplot import text
 import Weather_api
 import requests
 
@@ -11,7 +10,9 @@ class MyWeather:
 
         self.root = root
         self.root.title("My Weather App")
-        self.root.geometry("500x600+450+100")
+        self.root.geometry("600x600+450+100")
+       
+        self.root.minsize(600,600)
         self.root.config(bg="light blue")
 
         # ======image======
@@ -27,15 +28,17 @@ class MyWeather:
         title = Label(self.root, text="Weather App", font=("convection", 30, "bold"), background="#262626",
                       foreground="White", anchor="center").place(x=0, y=0, relwidth=1, height=60)
 
+        temp_lbl= Label(self.root, background="#033953").place(x=0, y=60, relwidth=1, height=60)
+
         lbl_city = Label(self.root, text="City Name", font=("bookman old style", 18, "bold"), background="#033953",
-                         foreground="White", anchor="w", padx=10).place(x=0, y=60, relwidth=1, height=60)
+                         foreground="White", anchor="w", padx=10).place(x=20, y=60, relwidth=1, height=60)
 
         self.txt_city = Entry(self.root, textvariable=self.var_search, font=("dubai", 17, "bold"), background="light yellow",
                               foreground="#033953", justify="center")
-        self.txt_city.place(x=150, y=75, width=250, height=30)
+        self.txt_city.place(x=180, y=75, width=260, height=30)
 
         btn_city = Button(self.root, cursor="hand2", image=self.search_icon, bg="white",
-                          activebackground="white", bd=0, command=self.get_weather).place(x=430, y=75, width=30, height=30)
+                          activebackground="white", bd=0, command=self.get_weather).place(x=470, y=75, width=30, height=30)
 
         # =====result=======
 
@@ -55,9 +58,9 @@ class MyWeather:
             "Sans", 20), background="light blue", foreground="black", anchor="c", padx=5)
         self.lbl_temp.place(x=0, y=390, relwidth=1, height=40)
 
-        self.lbl_aqi = Label(self.root, text="aqi", font=("Sans", 22), background="light blue",
+        self.lbl_aqi = Label(self.root, text="", font=("Sans", 22), background="light blue",
                              foreground="black", anchor="c", padx=5)
-        self.lbl_aqi.place(x=0, y=450, relwidth=1, height=60)
+        self.lbl_aqi.place(x=0, y=470, relwidth=1, height=100)
 
         # ====== footer======
 
@@ -112,7 +115,7 @@ class MyWeather:
 
                 # temp
                 self.lbl_temp.config(text=str(round(temp_c, 2)) +
-                                     " ºC | " + str(round(temp_f, 2)) + " ºF")
+                                     " ºC | " + str(round(temp_f, 2)) + " º F")
                 # wind
                 self.lbl_wind.config(text=wind)
 
@@ -158,12 +161,14 @@ class MyWeather:
         json1 = aqi_result.json()
         aqi_level = json1["list"][0]["main"]["aqi"]
 
+
         aqi_color= "light blue"
 
         quality = ""
         if aqi_level == 1:
             aqi_color = "#35f52f"
-            quality = "Good" 
+            quality = "Good"
+             
 
         if aqi_level == 2:
             aqi_color = "#9cf52f"
@@ -181,7 +186,7 @@ class MyWeather:
             aqi_color = "#f5572f"
             quality = "Very Poor" 
 
-        self.lbl_aqi.config(text= str(aqi_level) +" | " + quality , bg = aqi_color )
+        self.lbl_aqi.config(text= "AQI: " + str(aqi_level) +" | " + quality , bg = aqi_color )
 root = Tk()
 
 obj = MyWeather(root)
